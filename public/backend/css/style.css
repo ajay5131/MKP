@@ -1,0 +1,119 @@
+.dataTables_paginate .pagination .fa-angle-left, .dataTables_paginate .pagination .fa-angle-right {
+    line-height: 20px;
+}
+
+.d-flex {
+    display: flex !important;
+}
+.status__block .radio-list {
+    display: flex;
+    padding: 0 40px;
+    justify-content: center;
+}
+
+.status__block .radio-list label {
+    padding: 0 10px;
+    display: flex;
+}
+
+.status__block .radio-list label input {
+    /* margin: 4px 5px 0!important; */
+}
+
+.mb-2 {
+    margin-bottom: 20px !important;
+}
+
+/* Tabbing CSS */
+
+.our_team .tabs {
+    display: table;
+    /* table-layout: fixed; */
+    width: 100%;
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    box-shadow: 0px -5px 9px #eee;
+    padding-left: 0;
+    margin-bottom: 5px;
+}
+.our_team .tabs > li {
+    transition-duration: 0.25s;
+    display: table-cell;
+    list-style: none;
+    text-align: center;
+    padding: 20px 20px 25px 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: #333;
+    border: 0.5px solid #ccc;
+}
+.our_team .tabs > li:before {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 120%;
+    top: 0;
+    left: 0;
+    background-color: #18789c;
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    transition-duration: 0.25s;
+    border-radius: 5px 5px 0 0;
+}
+.our_team .tabs > li:hover:before {
+    -webkit-transform: translateY(70%);
+    transform: translateY(70%);
+}
+.our_team .tabs > li.active {
+    color: #50555a;
+    border-bottom: 0;
+}
+.our_team .tabs > li.active:before {
+    transition-duration: 0.5s;
+    background-color: white;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.our_team .tab__content {
+    background-color: white;
+    position: relative;
+    width: 100%;
+    border-radius: 5px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+.our_team .tab__content > li {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    list-style: none;
+}
+.our_team .tab__content > li .content__wrapper {
+    text-align: center;
+    border-radius: 5px;
+    width: 100%;
+    padding: 45px 40px 40px 40px;
+    background-color: white;
+}
+.pl-1 {
+    padding-left: 1rem !important;
+}
+
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#sortable li { margin:15px; padding:2px; font-size: 16px; background: #cedc98; border: 1px solid #DDDDDD; color: #333333; cursor:pointer;}
+
+
+.add_more_block {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.mb-2 {
+    margin-bottom: 2rem  !important;
+}

@@ -1,0 +1,350 @@
+.first-blog-section{
+	position:relative;
+	width:100%;
+	height:100%;
+}
+ .listing-blog-item a{
+	background: #eee;
+    width: 100%;
+    height: 40px;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc
+}
+.listing-blog-item a:hover{
+	text-decoration:none;
+}
+.listing-blog-item{
+	list-style:none;
+}
+.blog-card-header{
+	background:#eee;
+}
+.blog-card-listing{
+	border: 1px solid #ddd;
+    padding: 31px 30px 20px 29px;
+    color: grey;
+    box-shadow: 2px 2px 2px #eee;
+}
+.blog-list-card-img{
+	width:100%;
+}
+.blog-card-list-info-area p small:first-child{
+    font-style:italic;
+}
+.blog-card-list-info-area p small:last-child{
+    font-style:italic;
+    color:#18789c;
+}
+.blog-description{
+	line-height:30px;
+	text-align:justify;
+	color:grey;
+}
+.blog-card-header{
+	margin:10px 0px;
+	padding:10px 20px;
+	background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.read-m-blog-btn{
+	background:var(--bgColor);
+	color:#fff;
+}
+.read-m-blog-btn:hover{
+	background:var(--bgColor);
+	color:#fff;	 
+}
+.custom-badge-blog{
+	background-color:rgb(86,77,203);
+	color:#fff;
+	padding: 5px 10px;
+}
+.listing-blog-item li{
+	  margin:5px 0px;
+}
+.opportunities-card{
+	border: 1px solid #ddd;
+    padding: 31px 30px 20px 29px;
+    color: grey;
+    box-shadow: 2px 2px 2px #eee;
+    width:100%;
+    margin:20px 0px;
+}
+.opportunities-img{
+	width: 350px;
+    height: auto;
+}
+.bg-txt-color{
+	color:var(--bgColor);
+}
+.opportunities-info strong{
+	letter-spacing:1px;
+}
+.submit-opportunities{
+	background:var(--bgColor);
+	color:var(--white);
+	border:1px solid var(--bgColor);
+}
+.submit-opportunities:hover{
+	background:var(--bgColor);
+	color:var(--white);
+	border:1px solid var(--bgColor);
+}
+.creation-date{
+  text-transform:uppercase;
+  font-size:13px;
+   font-weight:500;
+}
+.creation-date-1{
+ color:red;
+  text-transform:uppercase;
+  font-size:13px;
+  font-weight:500;
+}
+.theme-border{
+	border-bottom: 1px solid var(--bgColor);
+    width: 100%;
+    margin:11px 0px;
+}
+.underline-txt{
+	text-decoration:underline;
+}
+form.custom-search-crowdfund{
+	margin: 5px auto;
+    display: flex;
+    justify-content: center;
+}
+form.custom-search-crowdfund input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 50%;
+  background:#fff;
+}
+
+form.custom-search-crowdfund button {
+  float: left;
+  width:10%;
+  padding:10px;
+  background:var(--bgColor);
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.custom-search-crowdfund button:hover {
+  background: #0b7dda;
+}
+
+form.custom-search-crowdfund::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* crowdfunding start css*/
+.crowdfundiing-card{
+	width:100%;
+	border:1px solid #eee;
+}
+.crowdfundiing-card img{
+	width: 100%;
+    height: 250px;
+    padding:0px 0px;
+}
+.crowdfunding-card-info{
+	padding: 15px 10px;
+	display:flex;
+	flex-direction:column;
+}
+.crowdfunding-card-info span{
+	padding:5px 5px;
+}
+.crowdfunding-card-info .crowdf-card-title{
+	  color:var(--bgColor);
+	  font-weight:700;
+	  font-size:20px;
+}
+.location-crowdf{
+	color:grey;
+}
+.grey-dollar-circle{
+	 background:#eee;
+	 width:100%;
+	 height:30px;
+	 border-radius:12px;
+}
+.blue-txt-color{
+	color:#0087FB;
+    font-weight: 600;
+}
+.flex-justify{
+	display:flex;
+	justify-content:space-between;
+}
+.border-sep-line{
+	border-bottom:1px solid var(--bgColor);
+	padding-bottom:20px;
+}
+/* crowdfunding start end */
+/* blog details page start */
+.blog-details-section{
+	position: relative;
+    width: 100%;
+    height: auto;
+    padding: 20px 0px;
+    background: #fafafa;
+}
+.blog-details-card{
+	margin: 25px auto;
+    position: relative;
+    border: 1px solid #eee;
+    max-width: 95%;
+    padding:0px;
+}
+.blog-detials-top-b{
+	border-width: 2px; border-color: black; margin-bottom: 0px;
+}
+.blog-details-card-head{
+	width:100%;
+	border-bottom:1px solid #dbdbdb;
+	padding:11px 21px;
+}
+.blog-d-by-txt-1{
+   font-style:italic;
+}
+.blog-d-by-txt-2{
+  font-style:italic;
+  color:#18789c;
+}
+.blog-details-card-body{
+	width:100%;
+	padding:11px 21px;
+}
+.blog-details-txt-para{
+	color:grey;
+}
+.red-heart{
+	color:red;
+}
+.blog-details-card-footer{
+	display:flex;
+	color:grey;
+}
+.blog-details-card-footer div{
+	margin:0px 15px 0px 13px;
+}
+.comments-box-card{
+	margin: 25px auto;
+    position: relative;
+    border: 1px solid #eee;
+    max-width: 95%;
+    padding: 0px;
+}
+.comments-box-header{
+	 padding: 11px 15px;
+    background: #eee;
+}
+.comments-box-body{
+	border: 1px solid #eee;
+    margin: 21px 21px;
+    padding: 10px 10px;
+}
+.select-category-blog-details{
+	width:300px;
+}
+.blog-details-comment-btn{
+	background:var(--bgColor);
+	color:var(--white);
+}
+.blog-details-comment-btn:hover{
+	background:var(--bgColor);
+	color:var(--white);
+}
+.text-area-height{
+	height:250px!important;
+}
+.header-msg{
+	border:3px solid #eeeeee;
+}
+.grey-header{
+   background: #eee;
+    padding: 15px 0px;
+}
+.grey-body{
+	height:200px;
+}
+.grey-footer{
+	background:grey;
+	background:#eee;
+	padding:11px 0px;
+}
+.text-area-msg{
+	height:200px!important;
+}
+.write-message{
+	cursor:pointer;
+}
+#add-more-file-i{
+	cursor:pointer;
+}
+.fileclone{
+	margin:5px 0px;
+}
+
+/* blog details page end */
+/*0000000000000000000000000000000000000000000000000000000000000*/
+@media (max-width: 767px){
+.nav.nav-tabs{
+  margin-top: 31px;
+  flex-direction: column;
+  width:100%;
+}
+.nav.nav-tabs li{
+	margin:11px 0px;
+}
+#swiper-slider{
+  height:331px!important;
+}
+.dropdown{
+	width:100%;
+}
+.blog-card-listing{
+	margin:0px 0px;
+	padding:22px 5px;
+}
+.opportunities-card{
+	margin:0px 0px;
+	padding:22px 5px;
+	margin:0px 5px;
+}
+.opportunities-img{
+	width:100%;
+}
+.select-category-blog-details{
+	width:100%;
+}
+.blog-details-comment-btn{
+	width:100%;
+}
+.blog-details-card-footer{
+	flex-direction:column;
+}
+.comments-box-body{
+	margin: 21px 5px;
+}
+
+@media (max-width:1024px){
+	.swiper-container{
+		height: calc(100vh - 616px);
+	}
+	video{
+		height: 400px!important;
+    object-fit: cover;
+	}
+}

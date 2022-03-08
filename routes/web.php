@@ -233,16 +233,6 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['user_auth:user']], fu
     Route::post('/fetch-cities', 'TravelController@fetchCity')->name('fetch.cities');
    
 
-    Route::post('/add-media', 'TravelController@addMedia')->name('travel.add.media');
-    Route::post('/update-media', 'TravelController@updateMedia')->name('travel.update.media');
-    Route::post('/delete-media', 'TravelController@deleteMedia')->name('travel.delete.media');
-
-    Route::post('/add-role', 'TravelController@addRole')->name('travel.add.role.media');
-    Route::post('/update-added-form', 'TravelController@updateAddedForm')->name('travel.update.added.form');
-    Route::post('/edit-role-form', 'TravelController@editRoleTravel')->name('project.edit.role.form');
-
- 
-
 });
 
     Route::post('/send-message', 'MessagesController@sendMessage')->name('send.message');

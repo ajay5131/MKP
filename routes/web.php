@@ -229,11 +229,16 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['user_auth:user']], fu
     Route::post('/store-travels', 'TravelController@storeTravel')->name('store.travels');
     Route::get('/travel-edit/{id}', 'TravelController@editTravel')->name('travel.edit');
     Route::PUT('/travel-update/{id}', 'TravelController@updateTravel')->name('travel.update');
-    Route::post('/fetch-states', 'TravelController@fetchState')->name('fetch.states');
     Route::post('/fetch-cities', 'TravelController@fetchCity')->name('fetch.cities');
+    Route::post('/travel-add-media', 'TravelController@addMedia')->name('travel.add.media');
+    Route::post('/add-itinerary', 'TravelController@addItinerary')->name('travel.add.itinerary');
+    Route::post('/itinerary-edit-form', 'TravelController@editItinerary')->name('itinerary.edit.form');
+    Route::post('/update-itinerary', 'TravelController@updateItinerary')->name('travel.update.itinerary');
+    Route::post('/delete-itinerary', 'TravelController@deleteItinerary')->name('travel.delete.itinerary');
+
    
 
 });
 
-    Route::post('/send-message', 'MessagesController@sendMessage')->name('send.message');
-});
+//     Route::post('/send-message', 'MessagesController@sendMessage')->name('send.message');
+// });

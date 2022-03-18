@@ -37,7 +37,8 @@
     <link rel='stylesheet' href='{{ asset('/') }}home/css/jquery.tribute.css'>
     {{-- Additional Css which need to add in specific page --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
     
     @stack('custom-style')

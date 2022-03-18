@@ -2,6 +2,7 @@
 
 namespace App\Models\Frontend;
 use App\Models\Frontend\ProjectTag;
+use App\Models\Frontend\TravelTag;
 use Illuminate\Database\Eloquent\Model;
 
 class Projects extends Model
@@ -17,5 +18,10 @@ class Projects extends Model
     public function project_tags()
     {
         return $this->hasMany(ProjectTag::class, 'project_id', 'id');
+    }
+
+    public function travel_tags()
+    {
+        return $this->hasMany(TravelTag::class, 'travel_id', 'id');
     }
 }

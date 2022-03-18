@@ -33,9 +33,9 @@
             <label class="lable-txt-weight">Type<span class="mandatory"> *</span></label>
             @if(count($project_types) >0 )
             <select class="form-control" name="project_type_id" id="project_type_id">
-              <option>Select a type</option>
+              <option>Select Type</option>
               @foreach ($project_types as $key => $val)
-              <option value="{{ $key }}" {{ ($key == $project->project_type_id)?'selected="selected"':'' }}">{{ $val }} </option>
+              <option value="{{ $key }}" {{ ($key == $project->project_type_id)? 'selected="selected"':'' }}">{{ $val }} </option>
               @endforeach
             </select>
             @endif
@@ -174,15 +174,12 @@
         <div class="col-md-4">
           <label>State <span class="mandatory">*</span></label>
           <select name="state_id" id="state_id" class="selectpicker select2" data-live-search="true">
-
-
           </select>
           @error('state_id')
           <p class="help-block"><strong>{{ $message }}</strong></p>
           @enderror
         </div>
         <div class="col-md-4">
-
           <label>City <span class="mandatory">*</span></label>
           <select name="city_id" id="city_id" class="selectpicker select2" data-live-search="true">
           </select>

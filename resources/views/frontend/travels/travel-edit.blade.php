@@ -3,13 +3,13 @@
 @section('content')
 
 <section id="post-project-section">
-  <form method="POST" action="{{ route('project.update', $project->id) }}" id="frm-add" enctype="multipart/form-data">
+  <form method="POST" action="{{ route('travel.update', $project->id) }}" id="frm-add" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="container-fluid bgColor-white">
       <div class="row align-v-center">
         <div class="col-md-8">
-          <h5 class="title-txt">Project Details</h5>
+          <h5 class="title-txt">Travel Details</h5>
         </div>
         <div class="col-md-4">
           <label class="lable-txt-weight">Added From <span class="mandatory">*</span></label>
@@ -31,9 +31,9 @@
         <div class="col-md-12">
           <div class="form-group">
             <label class="lable-txt-weight">Type<span class="mandatory"> *</span></label>
-            @if(count($project_types) >0 )
+            @if(count($project_types) > 0 )
             <select class="form-control" name="project_type_id" id="project_type_id">
-              <option>Select a type</option>
+              <option>Select Type</option>
               @foreach ($project_types as $key => $val)
               <option value="{{ $key }}" {{ ($key == $project->project_type_id)?'selected="selected"':'' }}">{{ $val }} </option>
               @endforeach
@@ -119,49 +119,16 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12 pt-5">
-          <label class="lable-txt-weight">Project Description<span class="mandatory">*</span> </label>
-          <textarea name="description" id="description" rows="10" cols="80">{{ $project->description ?? '' }}</textarea>
-          @error('description')
-          <p class="help-block"><strong>{{ $message }}</strong></p>
-          @enderror
+        <div class="col-md-12">
+          <h5 class="title-txt">More Details</h5>
         </div>
       </div>
 
-      <div class="row ">
-        <div class="col-md-9 pt-5">
-          <label class="lable-txt-weight">Tags</label>
-          <div class="row add-tag-new">
-            <?php
-            foreach ($project->project_tags as $key => $value) {
-
-            ?>
-              <div class="col-md-3 d-flex-align-c" id="tag-ids-{{$key}}">
-                <input type="text" name="project_tag[]" class="form-control" value="{{ $value->project_tag ?? '' }}">
-                <i class="fa fa-trash-o trash-icon del-tag" aria-hidden="true"></i>
-              </div>
-            <?php
-            } ?>
-            @error('project_tag')
-            <p class="help-block"><strong>{{ $message }}</strong></p>
-            @enderror
-
-          </div>
-        </div>
-        <div class="col-md-3 pt-5">
-          <label class="v-hide">dummy text</label>
-          <div class="row">
-            <div class="col-md-12">
-              <button type="button" class="btn-add-tag">Add Tags </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-md-4">
-          <label>Based In <span class="mandatory">*</span></label>
-          <select name="country_id" id="country_id" class="selectpicker select2" data-live-search="true" >
+          <label>Leave From <span class="mandatory">*</span></label>
+          <select name="country_id" id="country_id" class="selectpicker select2" data-live-search="true">
             <option data-tokens="" selected>Select Country</option>
             @foreach (General::getAllCountry() as $key => $val)
             <option value="{{ $key }}" {{ ($key == $project->country_id)?'selected="selected"':'' }}>{{ $val }} </option>
@@ -190,31 +157,116 @@
           <p class="help-block"><strong>{{ $message }}</strong></p>
           @enderror
         </div>
-
-        {{-- <div class="col-md-4 pt-3">
-
-            <label>City <span class="mandatory">*</span></label>
-            <select class="selectpicker" data-live-search="true">
-            <option data-tokens="" selected>Select Country</option>
-            <option data-tokens="">India</option>
-            <option data-tokens="">France</option>
-            </select>
-       </div> --}}
       </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>From <span class="mandatory">*</span></label>
+            <input class="form-control datetimepicker" id="from_date" placeholder="From Date" autocomplete="off" name="from_date" type="text" value="{{$project->from_date ?? ''}}">
+
+            @error('from')
+            <p class="help-block"><strong>{{ $message }}</strong></p>
+            @enderror
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label>To <span class="mandatory">*</span></label>
+          <input class="form-control datetimepicker" id="to_date" placeholder="To Date" autocomplete="off" name="to_date" type="text" value="{{$project->to_date ?? ''}}">
+
+          @error('to')
+          <p class="help-block"><strong>{{ $message }}</strong></p>
+          @enderror
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Number Of People <span class="mandatory">*</span></label>
+            <input class="form-control" type="number" name="no_of_people" id="no_of_people" min="1" value="{{ $project->no_of_people ?? ''}}">
+            @error('no_of_people')
+            <p class="help-block"><strong>{{ $message }}</strong></p>
+            @enderror
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label>Budget <span class="mandatory">*</span></label>
+          <input class="form-control" type="number" name="budget" id="budget" min="1" value="{{ $project->budget ?? ''}}">
+          @error('budget')
+          <p class="help-block"><strong>{{ $message }}</strong></p>
+          @enderror
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Accommodation Type<span class="mandatory">*</span></label>
+            <input type="text" class="form-control" name="accommodation_type" id="accommodation_type" min="1" value="{{ $project->accommodation_type ?? ''}}">
+            @error('accommodation_type')
+            <p class="help-block"><strong>{{ $message }}</strong></p>
+            @enderror
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 pt-5">
+          <label class="lable-txt-weight"> Description<span class="mandatory">*</span> </label>
+          <textarea name="description" id="description" rows="10" cols="80">{{ $project->description ?? '' }}</textarea>
+          @error('description')
+          <p class="help-block"><strong>{{ $message }}</strong></p>
+          @enderror
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col-md-9 pt-5">
+          <label class="lable-txt-weight">Tags</label>
+          <div class="row add-tag-new">
+            <?php
+            foreach ($project->project_tags as $key => $value) {
+
+            ?>
+              <div class="col-md-3 d-flex-align-c" id="tag-ids-{{$key}}">
+                <input type="text" name="project_tag[]" class="form-control" data_id="{{$value->project_tag_id}}" value="{{ $value->project_tag ?? '' }}">
+                <i class="fa fa-trash-o trash-icon del-tag" aria-hidden="true"></i>
+              </div>
+            <?php
+            } ?>
+            @error('project_tag')
+            <p class="help-block"><strong>{{ $message }}</strong></p>
+            @enderror
+
+          </div>
+        </div>
+        <div class="col-md-3 pt-5">
+          <label class="v-hide">dummy text</label>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="button" class="btn-add-tag">Add Tags </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
       <div class="row">
         <div class="col-md-6 pt-3">
           <label>Visible To <span class="mandatory">*</span></label>
           <select class="form-control" data-live-search="true" name="locked">
-            <option value= ""
-            <option value="3" {{ ($project->locked == 3)?'selected="selected"':'' }}>Secret</option>
             <option value="1" {{ ($project->locked == 1)?'selected="selected"':'' }}>Public</option>
             <option value="2" {{ ($project->locked == 2)?'selected="selected"':'' }}>Private</option>
+            <option value="3" {{ ($project->locked == 3)?'selected="selected"':'' }}>Secret</option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 pt-3">
-          <button type="submit" class="create-project-btn">UPDATE PROJECT &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
+          <button type="submit" class="create-project-btn">UPDATE TRAVEL &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
         </div>
       </div>
   </form>
@@ -230,7 +282,7 @@
     var countryId = "{{ isset($project->country_id) ? $project->country_id : '' }}";
     var stateId = "{{ isset($project->state_id) ? $project->state_id : '' }}";
     var cityId = "{{ isset($project->city_id) ? $project->city_id : '' }}";
-    
+
     $(function() {
 
       $('select[name="country_id"]').val(countryId).prop('selected', true);
@@ -241,49 +293,49 @@
     });
 
     $('#country_id').on('change', function() {
-        var countID = this.value;
-        var stateList = '<option value="" selected disabled>Select State</value>';
-        $.each(countries,function (index,data) {
-          
-            if(data.id == countID){
-         //console.log("rashik");
-                $.each(data.state_list,function (idx,state) {
-           
-                    stateList += '<option value="'+state.id+'">'+state.title+'</option>'
-                });
+      var countID = this.value;
+      var stateList = '<option value="" selected disabled>Select State</value>';
+      $.each(countries, function(index, data) {
 
-                return;
-            }
-        });
+        if (data.id == countID) {
+          //console.log("rashik");
+          $.each(data.state_list, function(idx, state) {
 
-        $('select[name="state_id"]').html(stateList);
+            stateList += '<option value="' + state.id + '">' + state.title + '</option>'
+          });
+
+          return;
+        }
+      });
+
+      $('select[name="state_id"]').html(stateList);
     });
 
     $('#state_id').on('change', function() {
-        
-        var countID = $('select[name="country_id"]').val();
-        var stateID = this.value;
-         
-        var cityList = '<option value="" selected disabled>Select City</value>';
-        $.each(countries,function (index,data) {
-         
-            if(data.id == countID){
-          
-                $.each(data.state_list,function (idx,state) {
-           
-                  if(state.id == stateID){
-                    $.each(state.cities_list,function (idx,city) {
-                    cityList += '<option value="'+city.id+'">'+city.title+'</option>'
-                       
-                    });
-                  }
-                });
 
-                return;
+      var countID = $('select[name="country_id"]').val();
+      var stateID = this.value;
+
+      var cityList = '<option value="" selected disabled>Select City</value>';
+      $.each(countries, function(index, data) {
+
+        if (data.id == countID) {
+
+          $.each(data.state_list, function(idx, state) {
+
+            if (state.id == stateID) {
+              $.each(state.cities_list, function(idx, city) {
+                cityList += '<option value="' + city.id + '">' + city.title + '</option>'
+
+              });
             }
-        });
+          });
 
-        $('select[name="city_id"]').html(cityList);
+          return;
+        }
+      });
+
+      $('select[name="city_id"]').html(cityList);
     });
   })
 
@@ -318,32 +370,38 @@
   //   $(this).parent('.remove_btn').remove();
   // });
 
-  $('.btn-add-tag').on('click',function(){
+  $('.btn-add-tag').on('click', function() {
     $('.add-tag-new').append(`
               <div class="col-md-3 d-flex-align-c" id="tag-ids">
                 <input type="text" name="project_tag[]" class="form-control" value="" required>
                 <i class="fa fa-trash-o trash-icon del-tag" aria-hidden="true"></i>
-              </div>`
-          )
+              </div>`)
   })
 
   $(document).on('click', '.del-tag', function(e) {
-    if(confirm("Are you sure you want to delete this?")){
-      var tagIds= $(this).closest('div').attr('id');
-    // var tagIds = e.target.id.split('-')[2]
-      $('#'+tagIds).remove()
-    }else{
-        return false;
+    if (confirm("Are you sure you want to delete this?")) {
+      var tagIds = $(this).closest('div').attr('id');
+      // var tagIds = e.target.id.split('-')[2]
+      $('#' + tagIds).remove()
+    } else {
+      return false;
     }
-    
+
   })
 
 
   $('body').on('click', '.childbtn', function() {
     $(this).parent('.remove_btn').remove();
   });
+</script>
+<script>
+$(function () {
+    $('.datetimepicker').datetimepicker({
+        //minDate: $.now(),
+        format: 'YYYY-MM-DD'
+    });
 
-  
+});
 </script>
 <script>
   CKEDITOR.replace('description');

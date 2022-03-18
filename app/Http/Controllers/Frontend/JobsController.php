@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
+use App\Models\Frontend\Travel;
 use App\Models\Frontend\Projects;
-use App\Models\Frontend\ProjectTag;
+use App\Models\Frontend\TravelTag;
 use App\Models\Frontend\ProjectType;
 use App\Models\Frontend\ProjectMedia;
 use App\Models\Frontend\ProjectMediaTitle;
@@ -19,63 +20,39 @@ use App\Models\Backend\City;
 use App\User;
 use Auth;
 
-class ProjectController extends BaseController
+class JobsController extends BaseController
 {
     public function index(Request $request)
     {
-        $projects = Projects::select('id','title','project_type_id','country_id','city_id', 'image')
-                            ->where('project_category',1) 
+        $travels = Projects::select('id','title','project_type_id','country_id','city_id', 'image')
+                            ->where('project_category', 2)
                             ->get();
-        return view('frontend.projects.project-list', compact('projects')); 
+        return view('frontend.travels.travel-list', compact('travels')); 
     }
 
-    public function projectCategoryList(Request $request)
+    
+    public function addTravel(Request $request)
     {
-        $total_projects = Projects::where('project_category', 1)->count();
-        $total_travels = Projects::where('project_category', 2)->count();
-        $total_jobs = Projects::where('project_category', 3)->count();
-        $total_listings = Projects::where('project_category', 4)->count();
-        $total_events = Projects::where('project_category', 5)->count();
-
-        return view('frontend.projects.project-category-list', compact('total_projects','total_travels','total_jobs','total_listings','total_events')); 
-    }
-
-    public function addProject(Request $request)
-    {
-        $user_profile_id = Auth::guard('user')->user()->profile_id;
-
+         $user_profile_id = Auth::guard('user')->user()->profile_id;
+         $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
         if($user_profile_id != ''){
            $profile_arr = explode(',', $user_profile_id);
            $profile_arr = \General::getParticularUserProfile($profile_arr);
         }
 
-       $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
- 
-        return view('frontend.projects.project-add', compact('profile_arr', 'project_types')); 
+        return view('frontend.travels.travel-add', compact('profile_arr', 'project_types')); 
     }
 
-    public function fetchState(Request $request)
-    {
-        $data['states'] = State::where("country_id",$request->country_id)->get(["title", "id"]);
-        return response()->json($data);
-    }
-
-    public function fetchCity(Request $request)
-    {
-        $data['cities'] = City::where("state_id",$request->state_id)->get(["title", "id"]);
-        return response()->json($data);
-    }
-
-    public function storeProject(Request $request)
+    public function storeTravel(Request $request)
     {  
         $this->validate($request,[
             'users_profiles_id'=>'required',
             'project_type_id'=>'required',
-            'title'=>'required|max:100|unique:projects',
+            'title'=>'required|max:100|unique:travels',
             'language_id'=>'required',
             'interest_id'=>'required',
             'description'=>'required',
-            'project_tag'=>'required',
+            'travel_tag'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
@@ -91,44 +68,58 @@ class ProjectController extends BaseController
         
         $request_data = [];
 
-        $project_tag = isset($request->project_tag) ? $request->project_tag:"";  
+        $travel_tag = isset($request->travel_tag) ? $request->travel_tag:"";  
 
         $request_data['users_profiles_id'] = isset($request->users_profiles_id) ? $request->users_profiles_id:"";
         $request_data['project_type_id'] = isset($request->project_type_id) ? $request->project_type_id:"";
-        $request_data['project_category'] = 1;
         $request_data['title'] = isset($request->title) ? $request->title:"";
+        $request_data['project_category'] = 2;
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
+        $request_data['image']   = isset($main_image) ? $main_image:""; 
         $request_data['description'] = isset($request->description) ? $request->description:"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
+        $request_data['from_date'] = isset($request->from_date) ? $request->from_date:"";
+        $request_data['to_date'] = isset($request->to_date) ? $request->to_date:"";
+        $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
+        $request_data['budget'] = isset($request->budget) ? $request->budget:"";
+        $request_data['accommodation_type'] = isset($request->accommodation_type) ? $request->accommodation_type:"";
         $request_data['locked'] = isset($request->locked) ? $request->locked:""; 
-        $request_data['from_date'] = now();
-        
-        $request_data['image']   = isset($main_image) ? $main_image:""; 
+       
 
         $last_id = Projects::insertGetId($request_data);
         if($last_id!=''){
-            if(count($project_tag) > 0 ){
-                foreach($project_tag as $key => $value){   
-                   ProjectTag::create([
-                        'project_id' => $last_id,
-                        'project_tag' => $value,
-                        'project_category' => 1
-                    ]);   
+            if(count($travel_tag) > 0 ){
+                foreach($travel_tag as $key => $value){   
+                   TravelTag::create(['travel_id' => $last_id, 'travel_tag' => $value]);   
                 }
             }
         }
 
-       return redirect()->route('project.list')->with('success','Added successfully!');
+       return redirect()->route('travel.list')->with('success','Added successfully!');
     }
 
-    public function projectDetails(Request $request, $id )
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where("country_id",$request->country_id)->get(["title", "id"]);
+        return response()->json($data);
+    }
+
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where("state_id",$request->state_id)->get(["title", "id"]);
+        return response()->json($data);
+    }
+
+    
+
+    public function travelDetails(Request $request, $id)
     {
        $user_id = Auth::guard('user')->user()->id;
        $project =  Projects::where('id', $id)->first();
-       $project_tags = ProjectTag::where('project_id', $id)->where('project_category',1)->get();
+       $project_tags = TravelTag::where('travel_id', $id)->get();
 
        $project_media_title = ProjectMediaTitle::where('project_id', $id)->get();
 
@@ -147,15 +138,15 @@ class ProjectController extends BaseController
        $project_media_title_result = ProjectMediaTitle::leftJoin('project_media as m','project_media_title.id','=','m.title_id')
                         ->select('project_media_title.id','project_media_title.title','m.media_type', 'm.media')
                         ->where('project_media_title.project_id', $id)
-                      //  ->where('m.media_type', 'video')
+                        ->where('m.media_type', 'video')
                         ->get(); 
 
         $designer = ProjectRole::where('project_role_category', 1)->first();                
         $investor = ProjectRole::where('project_role_category', 2)->first();                
 
         $profile_overview = UsersProfilePicture::where('users_profiles_id', $user_id)->first();                
-
-         return view('frontend.projects.project-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor')); 
+      
+         return view('frontend.travels.travel-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor')); 
         
     }
 
@@ -174,7 +165,7 @@ class ProjectController extends BaseController
               $firstAppData = [];
               $firstAppData['title'] = $title;
               $firstAppData['project_id'] = $request->project_id; 
-              $firstAppData['project_category'] = 1;
+              $firstAppData['project_category'] = 2;
               $firstAppData['sort_order'] = 1;
               
 
@@ -315,14 +306,16 @@ class ProjectController extends BaseController
         }
     }
 
-    //Edit Project 
+    //Edit Travel 
 
-    public function editProject(Request $request, $id)
+    public function editTravel(Request $request, $id)
     {
         
         $user_profile_id = Auth::guard('user')->user()->profile_id;
        
-        $project =  $project = Projects::with('project_tags')->where('id', $id)->first();
+        $project = Projects::with('travel_tags')->where('id', $id)->first();
+        $project->{'from_date'} = date('d/m/Y', strtotime($project->from_date));
+        $project->{'to_date'} = date('d/m/Y', strtotime($project->to_date));
         $project->interest_id = explode(",",$project->interest_id);
         if($user_profile_id != ''){
            $profile_arr = explode(',', $user_profile_id);
@@ -336,14 +329,14 @@ class ProjectController extends BaseController
 
         $cities = City::where('state_id', $project->state_id)->get();
 
-        $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
-        //return $project;
-        return view('frontend.projects.project-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project')); 
+         $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
+        // return $project;
+        return view('frontend.travels.travel-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project')); 
     }
 
-    //Update Project
+    //Update Travel
 
-    public function updateProject(Request $request, $id)
+    public function updateTravel(Request $request, $id)
     {  
         
         $this->validate($request,[
@@ -353,7 +346,7 @@ class ProjectController extends BaseController
             'language_id'=>'required',
             'interest_id'=>'required',
             'description'=>'required',
-            'project_tag'=>'required',
+            'travel_tag'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
@@ -370,35 +363,40 @@ class ProjectController extends BaseController
 
         $request_data = [];
         
-        $project_tag = isset($request->project_tag) ? $request->project_tag:"";  
+        $travel_tag = isset($request->travel_tag) ? $request->travel_tag:"";  
         $request_data['users_profiles_id'] = isset($request->users_profiles_id) ? $request->users_profiles_id:"";
         $request_data['project_type_id'] = isset($request->project_type_id) ? $request->project_type_id:"";
-        $request_data['project_category'] = 1;
         $request_data['title'] = isset($request->title) ? $request->title:"";
+        $request_data['project_category'] = 2;
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
+        $request_data['image']   = isset($main_image) ? $main_image:"";
         $request_data['description'] = isset($request->description) ? $request->description:"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
+        $request_data['from_date'] = isset($request->from_date) ? $request->from_date:""; 
+        $request_data['to_date'] = isset($request->to_date) ? date('Y-m-d',$request->to_date):""; 
+        $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
+        $request_data['budget'] = isset($request->budget) ? $request->budget:"";
+        $request_data['accommodation_type'] = isset($request->accommodation_type) ? $request->accommodation_type:"";
         $request_data['locked'] = isset($request->locked) ? $request->locked:""; 
-        $request_data['from_date'] = now();
         
-        $request_data['image']   = isset($main_image) ? $main_image:""; 
-       
+        
         $updateData = Projects::where('id',$id)->update($request_data);
-        
+
         if($updateData!=''){
 
-            if(count($project_tag) > 0 ){
-                ProjectTag::where('project_id', $id)->delete(); 
-                foreach($project_tag as $key => $value){  
+            if(count($travel_tag) > 0 ){
+                TravelTag::where('travel_id', $id)->delete(); 
+                foreach($travel_tag as $key => $value){  
                     
-                    ProjectTag::create(['project_id' => $id, 'project_tag' => $value, 'project_category'=>1]); 
+                    TravelTag::create(['travel_id' => $id, 'travel_tag' => $value]); 
                 }
             }
         }
-       return redirect()->route('project.list')->with('success','Added successfully!');
+        return redirect()->back();
+      // return redirect()->route('travel.list')->with('success','Added successfully!');
     }
     
 }

@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
 <section id="post-project-section">
   <form method="POST" action="{{ route('store.travels') }}" id="frm-add" enctype="multipart/form-data">
     @csrf
@@ -31,14 +33,15 @@
           <div class="form-group">
             <label class="lable-txt-weight">Type<span class="mandatory"> *</span></label>
 
-            <select class="form-control" name="travel_type_id" id="travel_type_id">
-              <option value="" selected>Select Travel Type</option>
-              <option value="1">Short Term</option>
-              <option value="2">Long Term</option>
+            <select class="form-control" name="project_type_id" id="project_type_id">
+              <option value="" >Select Type</option>
+              @foreach ($project_types as $key => $val)
+              <option value="{{ $key }}"> {{ $val }} </option>
+              @endforeach
 
             </select>
 
-            @error('travel_type_id')
+            @error('project_type_id')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
           </div>
@@ -159,7 +162,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>From <span class="mandatory">*</span></label>
-            <input class="form-control datepicker" id="travel_start_date" placeholder="yyyy-mm-dd" autocomplete="off" name="travel_start_date" type="date" value="">
+            <input class="form-control datetimepicker" id="from_date" placeholder="From Date" autocomplete="off" name="from_date" type="text" value="">
 
             @error('from')
             <p class="help-block"><strong>{{ $message }}</strong></p>
@@ -169,7 +172,7 @@
 
         <div class="col-md-6">
           <label>To <span class="mandatory">*</span></label>
-          <input class="form-control datepicker" id="travel_end_date" placeholder="yyyy-mm-dd" autocomplete="off" name="travel_end_date" type="date" value="">
+          <input class="form-control datetimepicker" id="to_date" placeholder="To Date" autocomplete="off" name="to_date" type="text" value="">
 
           @error('to')
             <p class="help-block"><strong>{{ $message }}</strong></p>
@@ -181,7 +184,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Number Of People <span class="mandatory">*</span></label>
-            <input type="number" name="no_of_people" id="no_of_people" min="1" value="">
+            <input type="number" class="form-control" name="no_of_people" id="no_of_people" min="1" value="">
             @error('no_of_people')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
@@ -190,7 +193,7 @@
 
         <div class="col-md-6">
           <label>Budget <span class="mandatory">*</span></label>
-          <input type="number" name="budget" id="budget" min="1" value="">
+          <input type="number" class="form-control" name="budget" id="budget" min="1" value="">
           @error('budget')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
@@ -198,10 +201,10 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
           <div class="form-group">
             <label>Accommodation Type<span class="mandatory">*</span></label>
-            <input type="text" name="accommodation_type" id="accommodation_type" min="1" value="">
+            <input type="text" class="form-control" name="accommodation_type" id="accommodation_type" min="1" value="">
             @error('accommodation_type')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
@@ -226,10 +229,10 @@
           <label class="lable-txt-weight">Tags</label>
           <div class="row">
             <div class="col-md-3 d-flex-align-c adding">
-              <input type="text" name="travel_tag[]" class="form-control">
+              <input type="text" name="project_tag[]" class="form-control">
               <i class="fa fa-trash-o trash-icon" aria-hidden="true"></i>
             </div>
-            @error('travel_tag')
+            @error('project_tag')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
 
@@ -249,15 +252,16 @@
         <div class="col-md-6 pt-3">
           <label>Visible To <span class="mandatory">*</span></label>
           <select class="form-control" data-live-search="true" name="locked">
-            <option value="3" selected>Secret</option>
+          <option value="" selected>Select Type</option>
             <option value="1">Public</option>
             <option value="2">Private</option>
+            <option value="3" >Secret</option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 pt-3">
-          <button type="submit" class="create-project-btn">CREATE PROJECT &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
+          <button type="submit" class="create-project-btn">CREATE TRAVEL &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
         </div>
       </div>
   </form>
@@ -341,6 +345,17 @@
       });
     });
   });
+</script>
+
+
+<script>
+$(function () {
+    $('.datetimepicker').datetimepicker({
+        //minDate: $.now(),
+        format: 'YYYY-MM-DD'
+    });
+
+});
 </script>
 <script>
   CKEDITOR.replace('description');

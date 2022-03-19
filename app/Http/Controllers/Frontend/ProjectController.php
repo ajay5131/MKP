@@ -388,17 +388,17 @@ class ProjectController extends BaseController
        
         $updateData = Projects::where('id',$id)->update($request_data);
         
-        if($updateData!=''){
-
+        
             if(count($project_tag) > 0 ){
-                ProjectTag::where('project_id', $id)->delete(); 
+                ProjectTag::where('project_id', $id)->where('project_category',1)->delete(); 
+                
                 foreach($project_tag as $key => $value){  
                     
                     ProjectTag::create(['project_id' => $id, 'project_tag' => $value, 'project_category'=>1]); 
                 }
             }
-        }
-       return redirect()->route('project.list')->with('success','Added successfully!');
+    
+        return redirect()->route('project.list')->with('success','Added successfully!');
     }
     
 }

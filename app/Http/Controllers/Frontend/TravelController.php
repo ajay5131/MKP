@@ -387,18 +387,17 @@ class TravelController extends BaseController
         
         $updateData = Projects::where('id',$id)->update($request_data);
 
-        if($updateData!=''){
-
             if(count($project_tag) > 0 ){
+               
                 ProjectTag::where('project_id', $id)->where('project_category',2)->delete(); 
                 foreach($project_tag as $key => $value){  
                     
                     ProjectTag::create(['project_id' => $id, 'project_tag' => $value,'project_category' => 2]); 
                 }
             }
-        }
-        return redirect()->back();
-      // return redirect()->route('travel.list')->with('success','Added successfully!');
+        
+      //  return redirect()->back();
+       return redirect()->route('travel.list')->with('success','Added successfully!');
     }
 
     public function addItinerary(Request $request)

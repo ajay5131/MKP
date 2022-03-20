@@ -31,14 +31,12 @@
 
 
         <div class="project-category" id="proj-cate-one">
-        <a href="{{ route('posted.job') }}">
           <div class="project-cate-img-3 zoom"></div>
           <div class="project-info-area">
             <img src="{{ asset('assets/images/team.png') }}" class="proj-img-icon">
             <span class="project-txt"> Jobs </span>
             <span class="project-no"> {{ $total_jobs ?? 0 }}</span>
           </div>
-          </a>
         </div>
 
         <div class="project-category" id="proj-cate-one">

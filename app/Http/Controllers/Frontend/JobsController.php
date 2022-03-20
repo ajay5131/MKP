@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
-use App\Models\Frontend\Travel;
+use App\Models\Frontend\Itinerary;
 use App\Models\Frontend\Projects;
-use App\Models\Frontend\TravelTag;
+use App\Models\Frontend\ProjectTag;
 use App\Models\Frontend\ProjectType;
 use App\Models\Frontend\ProjectMedia;
 use App\Models\Frontend\ProjectMediaTitle;
@@ -24,14 +24,14 @@ class JobsController extends BaseController
 {
     public function index(Request $request)
     {
-        $travels = Projects::select('id','title','project_type_id','country_id','city_id', 'image')
-                            ->where('project_category', 2)
+        $jobs = Projects::select('id','title','project_type_id','country_id','city_id', 'image')
+                            ->where('project_category', 3)
                             ->get();
-        return view('frontend.travels.travel-list', compact('travels')); 
+        return view('frontend.jobs.job-list', compact('jobs')); 
     }
 
     
-    public function addTravel(Request $request)
+    public function addJob(Request $request)
     {
          $user_profile_id = Auth::guard('user')->user()->profile_id;
          $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
@@ -40,19 +40,19 @@ class JobsController extends BaseController
            $profile_arr = \General::getParticularUserProfile($profile_arr);
         }
 
-        return view('frontend.travels.travel-add', compact('profile_arr', 'project_types')); 
+        return view('frontend.jobs.job-add', compact('profile_arr', 'project_types')); 
     }
 
-    public function storeTravel(Request $request)
+    public function storeJob(Request $request)
     {  
         $this->validate($request,[
             'users_profiles_id'=>'required',
             'project_type_id'=>'required',
-            'title'=>'required|max:100|unique:travels',
-            'language_id'=>'required',
+            'title'=>'required|max:100|unique:projects',
+            'job_language_id'=>'required',
             'interest_id'=>'required',
             'description'=>'required',
-            'travel_tag'=>'required',
+            'project_tag'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
@@ -68,37 +68,54 @@ class JobsController extends BaseController
         
         $request_data = [];
 
-        $travel_tag = isset($request->travel_tag) ? $request->travel_tag:"";  
+        $project_tag = isset($request->project_tag) ? $request->project_tag:"";  
 
         $request_data['users_profiles_id'] = isset($request->users_profiles_id) ? $request->users_profiles_id:"";
         $request_data['project_type_id'] = isset($request->project_type_id) ? $request->project_type_id:"";
         $request_data['title'] = isset($request->title) ? $request->title:"";
-        $request_data['project_category'] = 2;
-        $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
-        $request_data['interest_id'] = implode(',',$request->interest_id);
-        $request_data['image']   = isset($main_image) ? $main_image:""; 
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['project_category'] = 3;
+        $request_data['job_language_id'] = isset($request->job_language_id) ? $request->job_language_id:"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
-        $request_data['from_date'] = isset($request->from_date) ? $request->from_date:"";
-        $request_data['to_date'] = isset($request->to_date) ? $request->to_date:"";
+        $request_data['interest_id'] = isset($request->interest_id) ? implode(',',$request->interest_id) :"";
+        $request_data['image']   = isset($main_image) ? $main_image:""; 
+        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['expiry_date'] = isset($request->expiry_date) ? $request->expiry_date:"";
+        $request_data['fields'] = isset($request->fields) ? $request->fields:"";
         $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
-        $request_data['budget'] = isset($request->budget) ? $request->budget:"";
-        $request_data['accommodation_type'] = isset($request->accommodation_type) ? $request->accommodation_type:"";
-        $request_data['locked'] = isset($request->locked) ? $request->locked:""; 
+        $request_data['size'] = isset($request->size) ? $request->size:"";
+        $request_data['job_atmosphere'] = isset($request->job_atmosphere) ? $request->job_atmosphere:"";
+        $request_data['job_description'] = isset($request->job_description) ? $request->job_description:""; 
+        $request_data['skills'] = isset($request->skills) ? $request->skills:""; 
+        $request_data['education'] = isset($request->education) ? $request->education:""; 
+        $request_data['bonus'] = isset($request->bonus) ? $request->bonus:"";
+        $request_data['experience'] = isset($request->experience) ? $request->experience:""; 
+        $request_data['employment_type'] = isset($request->employment_type) ? $request->employment_type:"";
+        $request_data['day_hours'] = isset($request->day_hours) ? $request->day_hours:"";
+        $request_data['salary'] = isset($request->salary) ? $request->salary:"";
+        $request_data['role_title'] = isset($request->role_title) ? $request->role_title:"";
+        $request_data['shifts'] = isset($request->shifts) ? implode(',',$request->shifts) :"";
+
+
        
-
+         
         $last_id = Projects::insertGetId($request_data);
-        if($last_id!=''){
-            if(count($travel_tag) > 0 ){
-                foreach($travel_tag as $key => $value){   
-                   TravelTag::create(['travel_id' => $last_id, 'travel_tag' => $value]);   
+        
+            if(count($project_tag) > 0 ){
+                foreach($project_tag as $key => $value){   
+                    ProjectTag::create([
+                        'project_id' => $last_id,
+                        'project_tag' => $value,
+                        'project_category' => 3
+                    ]);   
                 }
+            }else{
+                return redirect()->route('posted.job')->with('success','Added successfully!');
             }
-        }
+        
 
-       return redirect()->route('travel.list')->with('success','Added successfully!');
+       return redirect()->route('posted.job')->with('success','Added successfully!');
     }
 
     public function fetchState(Request $request)
@@ -115,13 +132,13 @@ class JobsController extends BaseController
 
     
 
-    public function travelDetails(Request $request, $id)
+    public function jobDetails(Request $request, $id)
     {
        $user_id = Auth::guard('user')->user()->id;
-       $project =  Projects::where('id', $id)->first();
-       $project_tags = TravelTag::where('travel_id', $id)->get();
+       $project =  Projects::where('id', $id)->where('project_category', 3)->first();
+        $project_tags = ProjectTag::where('project_id', $id)->where('project_category',3)->get();
 
-       $project_media_title = ProjectMediaTitle::where('project_id', $id)->get();
+        $project_media_title = ProjectMediaTitle::where('project_id', $id)->where('project_category', 3)->get();
 
        $project_role_categories = ProjectRoleCategory::get();
        $keypeoples = KeyPeopleTitles::where('users_id', $user_id)->get();
@@ -138,7 +155,8 @@ class JobsController extends BaseController
        $project_media_title_result = ProjectMediaTitle::leftJoin('project_media as m','project_media_title.id','=','m.title_id')
                         ->select('project_media_title.id','project_media_title.title','m.media_type', 'm.media')
                         ->where('project_media_title.project_id', $id)
-                        ->where('m.media_type', 'video')
+                        ->where('project_media_title.project_category', 3)
+                        //->where('m.media_type', 'video')
                         ->get(); 
 
         $designer = ProjectRole::where('project_role_category', 1)->first();                
@@ -146,14 +164,13 @@ class JobsController extends BaseController
 
         $profile_overview = UsersProfilePicture::where('users_profiles_id', $user_id)->first();                
       
-         return view('frontend.travels.travel-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor')); 
+         return view('frontend.jobs.job-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor')); 
         
     }
 
     public function addMedia(Request $request)
     {
-
-         if($request->ajax()){
+        if($request->ajax()){
           $media_cat_type =  $request->media_cat_type;  
           
           if($media_cat_type == 1){
@@ -169,7 +186,7 @@ class JobsController extends BaseController
               $firstAppData['sort_order'] = 1;
               
 
-             $lid = ProjectMediaTitle::insertGetId($firstAppData);
+            ProjectMediaTitle::insertGetId($firstAppData);
              
           }else if($media_cat_type == 2){ 
 
@@ -187,6 +204,7 @@ class JobsController extends BaseController
 
              $secondAppData['title_id'] = $request->title_id; 
              $secondAppData['project_id'] = $request->project_id; 
+             $secondAppData['project_category'] = 2; 
              $secondAppData['media'] = $main_image;
              $secondAppData['media_type'] = 'image';
              $secondAppData['description'] = $request->description; 
@@ -213,7 +231,8 @@ class JobsController extends BaseController
                 $media_type = 'audio';  
             } 
              $secondAppData['title_id'] = $request->title_id; 
-             $secondAppData['project_id'] = $request->project_id; 
+             $secondAppData['project_id'] = $request->project_id;
+             $secondAppData['project_category'] = 2;  
              $secondAppData['media'] = $media;
              $secondAppData['media_type'] = $media_type;
              $secondAppData['description'] = $request->description; 
@@ -306,16 +325,14 @@ class JobsController extends BaseController
         }
     }
 
-    //Edit Travel 
+    //Edit job 
 
-    public function editTravel(Request $request, $id)
+    public function editjob(Request $request, $id)
     {
         
         $user_profile_id = Auth::guard('user')->user()->profile_id;
        
-        $project = Projects::with('travel_tags')->where('id', $id)->first();
-        $project->{'from_date'} = date('d/m/Y', strtotime($project->from_date));
-        $project->{'to_date'} = date('d/m/Y', strtotime($project->to_date));
+        $project = Projects::with('project_tags')->where('id', $id)->where('project_category',3)->first();
         $project->interest_id = explode(",",$project->interest_id);
         if($user_profile_id != ''){
            $profile_arr = explode(',', $user_profile_id);
@@ -326,31 +343,26 @@ class JobsController extends BaseController
             $q->with('citiesList');
           }])->select('id','title')->get()->toArray(); 
         $states = State::where('country_id', $project->country_id)->get();
-
         $cities = City::where('state_id', $project->state_id)->get();
-
-         $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
-        // return $project;
-        return view('frontend.travels.travel-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project')); 
+        $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
+        return view('frontend.jobs.job-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project')); 
     }
 
-    //Update Travel
-
-    public function updateTravel(Request $request, $id)
+    //Update job
+    public function updateJob(Request $request, $id)
     {  
-        
         $this->validate($request,[
             'users_profiles_id'=>'required',
             'project_type_id'=>'required',
             'title'=>'required|max:100',
-            'language_id'=>'required',
+            'job_language_id'=>'required',
             'interest_id'=>'required',
             'description'=>'required',
-            'travel_tag'=>'required',
+            'project_tag'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
-           // 'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+            //'image' => 'required|mimes:png,jpg,jpeg|max:2048'
         ]);
 
         $images =  Projects::where('id',$id)->select('id', 'image')->first();
@@ -361,42 +373,121 @@ class JobsController extends BaseController
             $main_image = $images->image; 
          }
 
-        $request_data = [];
         
-        $travel_tag = isset($request->travel_tag) ? $request->travel_tag:"";  
+        $request_data = [];
+
+        $project_tag = isset($request->project_tag) ? $request->project_tag:"";  
+
         $request_data['users_profiles_id'] = isset($request->users_profiles_id) ? $request->users_profiles_id:"";
         $request_data['project_type_id'] = isset($request->project_type_id) ? $request->project_type_id:"";
         $request_data['title'] = isset($request->title) ? $request->title:"";
-        $request_data['project_category'] = 2;
-        $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
-        $request_data['interest_id'] = implode(',',$request->interest_id);
-        $request_data['image']   = isset($main_image) ? $main_image:"";
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['project_category'] = 3;
+        $request_data['job_language_id'] = isset($request->job_language_id) ? $request->job_language_id:"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
-        $request_data['from_date'] = isset($request->from_date) ? $request->from_date:""; 
-        $request_data['to_date'] = isset($request->to_date) ? date('Y-m-d',$request->to_date):""; 
+        $request_data['interest_id'] = isset($request->interest_id) ? implode(',',$request->interest_id) :"";
+        $request_data['image']   = isset($main_image) ? $main_image:""; 
+        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['expiry_date'] = isset($request->expiry_date) ? $request->expiry_date:"";
+        $request_data['fields'] = isset($request->fields) ? $request->fields:"";
         $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
-        $request_data['budget'] = isset($request->budget) ? $request->budget:"";
-        $request_data['accommodation_type'] = isset($request->accommodation_type) ? $request->accommodation_type:"";
-        $request_data['locked'] = isset($request->locked) ? $request->locked:""; 
-        
-        
+        $request_data['size'] = isset($request->size) ? $request->size:"";
+        $request_data['job_atmosphere'] = isset($request->job_atmosphere) ? $request->job_atmosphere:"";
+        $request_data['job_description'] = isset($request->job_description) ? $request->job_description:""; 
+        $request_data['skills'] = isset($request->skills) ? $request->skills:""; 
+        $request_data['education'] = isset($request->education) ? $request->education:""; 
+        $request_data['bonus'] = isset($request->bonus) ? $request->bonus:"";
+        $request_data['experience'] = isset($request->experience) ? $request->experience:""; 
+        $request_data['employment_type'] = isset($request->employment_type) ? $request->employment_type:"";
+        $request_data['day_hours'] = isset($request->day_hours) ? $request->day_hours:"";
+        $request_data['salary'] = isset($request->salary) ? $request->salary:"";
+        $request_data['role_title'] = isset($request->role_title) ? $request->role_title:"";
+        $request_data['shifts'] = isset($request->shifts) ? implode(',',$request->shifts) :"";
+
+
+       
+         
         $updateData = Projects::where('id',$id)->update($request_data);
-
-        if($updateData!=''){
-
-            if(count($travel_tag) > 0 ){
-                TravelTag::where('travel_id', $id)->delete(); 
-                foreach($travel_tag as $key => $value){  
+        
+            if(count($project_tag) > 0 ){
+                
+                ProjectTag::where('project_id', $id)->where('project_category',3)->delete(); 
+                foreach($project_tag as $key => $value){  
                     
-                    TravelTag::create(['travel_id' => $id, 'travel_tag' => $value]); 
+                    ProjectTag::create(['project_id' => $id, 'project_tag' => $value,'project_category' => 3]); 
                 }
+            }else{
+                return redirect()->route('posted.job')->with('success','Added successfully!');
             }
-        }
-        return redirect()->back();
-      // return redirect()->route('travel.list')->with('success','Added successfully!');
+        
+
+       return redirect()->route('posted.job')->with('success','Added successfully!');
     }
+
+    public function addItinerary(Request $request)
+    {
+        //return response()->json($request->all());
+        $this->validate($request,[
+            'title'=>'required',
+            'itinerary_value'=>'required',
+        ]);
+
+        $request_data = [];
+        foreach($request->title as $key=>$itinerary){
+            $request_data['project_id'] = $request->project_id; 
+            $request_data['title'] = $request->title[$key];
+            $request_data['itinerary_value'] = $request->itinerary_value[$key]; 
+           
+            Itinerary::insertGetId($request_data);
+        }
+        return response()->json(['success' => true, 'msg' => 'Successfully Added Initerary']);
+    }
+
+    public function editItinerary(Request $request)
+    {
+        
+        if($request->ajax()){
+            $edit_itinerary_id = $request->edit_itinerary_id;  
+            $edit_itinerary_result = Itinerary::where('id', $edit_itinerary_id)->first();   
+
+            return response()->json($edit_itinerary_result);
+        }
+    }
+
+    //Update Itinerary
+
+    public function updateItinerary(Request $request)
+    {  
+        $this->validate($request,[
+            'title'=>'required',
+            'itinerary_value'=>'required',
+        ]);
+        $request_data = [];
+        foreach($request->title as $key=>$itinerary){
+            $request_data['project_id'] = $request->project_id;
+            $request_data['title'] = isset($request->title) ? $request->title[$key]:"";
+            $request_data['itinerary_value'] = isset($request->itinerary_value) ? $request->itinerary_value[$key]:"";
+            
+            $updateData = Itinerary::where('id',$request->initerary_id)->update($request_data);
+            return response()->json(['success' => true, 'msg' => 'Successfully updated Initerary']);
+        }
+
+    }
+
+    //delete Itinerary
+
+    public function deleteItinerary(Request $request)
+    { 
+        if($request->ajax()){
+            $id = $request->id; 
+
+            if($id!=''){
+                $last = Itinerary::where('id', $id)->delete();
+                return response()->json(['success' => true, 'msg' => 'Successfully Deleted']);
+            } 
+        }
+    }
+
     
 }

@@ -48,7 +48,7 @@ class TravelController extends BaseController
         $this->validate($request,[
             'users_profiles_id'=>'required',
             'project_type_id'=>'required',
-            'title'=>'required|max:100|unique:travels',
+            'title'=>'required|max:100|unique:projects',
             'language_id'=>'required',
             'interest_id'=>'required',
             'description'=>'required',

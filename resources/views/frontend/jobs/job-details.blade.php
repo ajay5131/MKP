@@ -18,12 +18,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 text-center">
-                <h2 class="mb-0">TRAVEL </h2>
+                <h2 class="mb-0">JOB </h2>
 
             </div>
             <div class="col-md-6 text-center">
                 <h2 class="mb-0">Status :
-                    {{ \Carbon\Carbon::parse($project->from_date)->format('d-m-Y') ?? '' }}
+                    {{ $project->expiry_date ?? '' }}
                 </h2>
 
             </div>
@@ -45,7 +45,7 @@
                 <div class="d-flex text-right right-align">
                     <div class="dropdown show">
                         <a class="btn btn-secondary dropdown-toggle dropdown-arrow f-w-m" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Share Travel
+                            Share Job
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#to_your_feed">To your
@@ -61,7 +61,7 @@
                             ...
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('travel.edit', $project->id) }}">Edit Travel </a>
+                            <a class="dropdown-item" href="{{ route('edit.front.job', $project->id) }}">Edit Job </a>
                             <a class="dropdown-item" href="#">Archive Travel</a>
                             <a class="dropdown-item" href="#">Delete Travel</a>
                             <a class="dropdown-item" href="#">Sent to Crowdfunding</a>
@@ -118,254 +118,169 @@
         </div>
     </div>
 </section>
-<section id="b-descript-section">
+<section id="b-descript-section" class="section-bg-light-grey">
+  <div class="container-fluid">
+   
+     <div class="row">
+      <div class="col-md-9">
+   <div class="white-box">
+      <div class="row">
+      <div class="col-md-12">
+      <div class="description-box">
+        <div class="row mb-3 ">
+          <div class="col-md-12">
+             <h5 class="text-theme">About us</h5>
+             <p>{{$project->description ?? ""}}</p>
+             <span class="badge c-badge-1 start-badge">@if (!$project_tags->isEmpty())
+                                        @foreach ($project_tags as $key => $tag)
+                                        <span class="badge badge-primary-{{ $key + 1 }}">{{ $tag->project_tag ?? '' }}</span>
+                                        @endforeach
+                                        @endif</span>
+          </div>
+        </div>  
+      </div>  
+      </div>
+      </div> 
+    <div class="container my-4 details-and-itinerary">
+      <div class="row pt-4">
+      <div class="col-md-12">
+          <div class="row">
+              <div class="col-md-3">
+                <label class="label-f-w">Fields</label>
+              </div>
+              <div class="col-md-6">
+                 <p>{{ $project->fields ?? '' }}</p>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-3">
+                <label class="label-f-w">Size</label>
+              </div>
+              <div class="col-md-6">
+                 <p>{{ $project->size ?? '' }}</p>
+              </div>
+          </div>
+            <div class="row">
+              <div class="col-md-3">
+                <label class="label-f-w">Number  of Employees</label>
+              </div>
+              <div class="col-md-6">
+                 <p>{{ $project->no_of_people ?? '' }}</p>
+              </div>
+          </div>
+
+           <div class="row">
+              <div class="col-md-3">
+                <label class="label-f-w">Atmosphere</label>
+              </div>
+              <div class="col-md-6">
+                 <p>{{ $project->job_atmosphere ?? '' }} </p>
+              </div>
+          </div>
+             <div class="row">
+              <div class="col-md-3">
+                <label class="label-f-w">Bonus</label>
+              </div>
+              <div class="col-md-6">
+                 <p>{{ $project->bonus ?? '' }}</p>
+              </div>
+          </div>
+      </div>
+      </div>
+      </div>
+      </div>
+        </div>
+
+    <div class="col-md-3">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-9">
+    <div class="row">
+    <div class="card custom-card" id="card-job-details-right">
+   <span class="posted-txt-in-card">Posted on the 23-06-2021 by:</span>
+    <img class="card-imgs" src="https://www.meetkeypeople.com/jobsportal/public/images/register/1624389420.png" alt="Card image cap">
+    <div class="card-body">
+    <p class="card-text">
+    <h5>Iola Nguyen (F, 30)</h5>
+    </p>
+        <p class="company_profession mb-1 theme-c">Ceo & Founder</p>
+        <p class="location_detail mb-1"><i class="fa fa-map-marker" aria-hidden="true"></i> London  U.K</p>
+      
 
-            </div>
-            <div class="col-md-3">
-                <div class="plus-icons-modal" data-toggle="modal" data-target="#add_social_media">
-                    <i class="fa fa-plus plus-fa" aria-hidden="true"></i>
-                </div>
-            </div>
+
+
+        <div class="flex-just">
+        <div><i class="fa fa-file-text-o" aria-hidden="true"></i> Reviews &nbsp; <i class="fa fa-star theme-c" aria-hidden="true"></i></div>
+        <div>0</div>
         </div>
-        <div class="row">
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="description-box">
-                            <div class="row mb-3 border-bottom-l-grey">
-                                <div class="col-md-12">
-                                    <h5 class="text-theme">SUMMARY</h5>
-                                </div>
-                            </div>
-                            <div class="row mb-2 border-bottom-l-grey">
-                                <div class="col-md-3">
-                                    <label class="strong-label">Date </label>
-                                </div>
-                                <div class="col-md-9">
-                                    <p class="mb-0">From : {{ \Carbon\Carbon::parse($project->from_date)->format('d-m-Y') ?? '' }} to {{ \Carbon\Carbon::parse($project->to_date)->format('d-m-Y') ?? '' }}</p>
-                                </div>
-                            </div>
-                            <div class="row mb-2 border-bottom-l-grey">
-                                <div class="col-md-3">
-                                    <label class="strong-label">BUDGET</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <p class="mb-0">$ {{ $project->budget ?? '' }} / per person</p>
-                                </div>
-                            </div>
-                            <div class="row mb-2 border-bottom-l-grey">
-                                <div class="col-md-3">
-                                    <label class="strong-label">N° OF PEOPLE</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <p class="mb-0">{{ $project->no_of_people ?? '' }}</p>
-                                </div>
-                            </div>
-                            <div class="row mb-2 border-bottom-l-grey">
-                                <div class="col-md-3">
-                                    <label class="strong-label">ACCOMMODATION</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <p class="mb-0">{{ $project->accommodation_type ?? '' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <h5>Details </h5>
-                        <div class="iternary">
-                            <p>{{ $project->title ?? '' }}</p>
-                        </div>
-                        <div class="mb-3 mt-1">
-                            @if (!$project_tags->isEmpty())
-                            @foreach ($project_tags as $key => $tag)
-                            <span class="badge badge-primary-{{ $key + 1 }}">{{ $tag->project_tag ?? '' }}</span>
-                            @endforeach
-                            @endif
-                        </div>
-
-                        <div class="our-interests pt-4">
-                            <h6>Our Interests</h6>
-                            <div class="interest-flex-r-travel">
-                                <div>
-                                    <img src="https://meetkeypeople.com/images/icons/Coding.png" class="img-src-icon">
-                                    <p class="p-txt-color">Adventure</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row d-flex align-center">
-                            <div>
-                                <h5 class="mb-0 pr-2">Itinerary</h5>
-                            </div>
-                            <div>
-                                <span class="plus-i-add-role" data-toggle="modal" data-target="#itinerary-modal">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="iternery-data">
-                            @if (!$itinerary->isEmpty())
-                                @foreach ($itinerary as  $key=> $val)
-                                <div class="iternery-day">
-                                    <a href="">
-                                        <span class="first-span">{{$key+1}}.</span>
-                                        <span class="sec-span"> {{$val->title ?? ""}}   {{$val->itinerary_value ?? ""}} </span>
-                                    </a>
-                                    <a href="javascript:void(0)" class="fa fa-pencil hide-h-show" aria-hidden="true" data-toggle="modal"  onclick="showItineraryValue('{{$val->id }}')"></a>
-                                </div>
-                                @endforeach
-                            @endif
-                            </div>
-                        </div>
-
-
-                    </div>
-                            
-                </div>
-
-                <div class="row py-4">
-                    <div class="col-md-6">
-                        <i class="fa fa-sort sort" aria-hidden="true"></i>
-                        <span class="sort-titles-txt" data-toggle="modal" data-target="#sort-title">Sort Titles</span>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <div class="d-flex align-v-center justify-content-end">
-                            <span class="add-media-txt">Add Media</span>
-                            <span class="plus-i-span" data-toggle="modal" data-target="#add_media"> <i class="fa fa-plus" aria-hidden="true"></i></span>
-                        </div>
-                    </div>
-                </div>
-
-                @if (!$project_media_title_result->isEmpty())
-                @foreach ($project_media_title_result as $val)
-                <div class="row py-4">
-                    <div class="col-sm-12">
-                        <div class="project-title-strip">
-                            <div class="mkp-white-border">
-                                <span class="mkp-txt"> {{ $val->title }}</span>
-                                <i class="fa fa-pencil w-pensil-col" aria-hidden="true" data-toggle="modal" id="edit-title" data-id=" {{ $val->id }}" data-title=" {{ $val->title }}"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row py-4">
-                    <div class="col-md-4">
-                        <img src="{{ asset('uploads/' . $val->media) }}" class="grid-layout-item">
-                    </div>
-                </div>
-                @endforeach
-                @endif
-
-
-
-
-
-
-
-            </div>
-            <div class="col-md-3">
-                <div class="container-fluid">
-                    <div class="row">
-                        <h3 class="profile-title">Contributors</h3>
-                    </div>
-                    <div class="row d-flex align-v-center justify-space-between">
-                        <span class="sub-title">Add Role</span>
-                        <span class="plus-i-add-role" data-toggle="modal" data-target="#add-role-modal">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 pl-0 pr-0">
-                            <div id="accordion">
-                                <div class="card" id="card-w">
-                                    <div class="creator-flex">
-                                        <span>Creator</span>
-                                        <span>
-                                            <i class="fa fa-angle-up" aria-hidden="true" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
-                                        </span>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                                        <div class="card-body card-body-custom">
-                                            <div class="card custom-card" style="width:100%;">
-                                                <i class="fa fa-pencil profile-pic-pensil" aria-hidden="true" data-toggle="modal" data-target="#added-from-modal"></i>
-                                                <img class="card-imgs" src="{{ asset('/')}}uploads/profile_picture/{{$profile_overview->profile_pic}}" alt="Card image cap">
-                                                <div class="card-body">
-                                                    <p class="card-text">
-                                                    <h5>{{ Auth::guard('user')->user()->full_name }}</h5>
-                                                    <span>{{ Auth::guard('user')->user()->email }}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card" id="card-w">
-                                    <div class="creator-flex">
-                                        <span>Designer</span>
-                                        <span>
-                                            <i class="fa fa-angle-up" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"></i>
-                                        </span>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
-                                        <div class="card-body card-body-custom">
-                                            <div class="card custom-card" style="width:100%;">
-                                                <i class="fa fa-pencil profile-pic-pensil" aria-hidden="true" data-toggle="modal" onclick="showDesignerInvesterModel('{{$designer->id }}')"></i>
-                                                <i class="fa fa-times card-close-red" aria-hidden="true"></i>
-                                                <img class="card-imgs" src="{{ asset('/')}}uploads/{{$designer->image}}" alt="Card image cap">
-                                                <div class="card-body">
-                                                    <p class="card-text">
-                                                    <h5>{{$designer->role_title}}</h5>
-                                                    <span>{{ \General::getCompensation($designer->compensation) }}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="card" id="card-w">
-                                    <div class="creator-flex">
-                                        <span>Investors</span>
-                                        <span>
-                                            <i class="fa fa-angle-up" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"></i>
-                                        </span>
-                                    </div>
-
-                                    <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
-                                        <div class="card-body card-body-custom">
-                                            <div class="card custom-card" style="width:100%;">
-                                                <i class="fa fa-pencil profile-pic-pensil" aria-hidden="true" data-toggle="modal" onclick="showDesignerInvesterModel('{{ $investor->id }}')"></i>
-                                                <i class="fa fa-times card-close-red" aria-hidden="true"></i>
-                                                <img class="card-imgs" src="{{ asset('/')}}uploads/{{$investor->image}}" alt="Card image cap">
-                                                <div class="card-body">
-                                                    <p class="card-text">
-                                                    <h5>{{$investor->role_title}}</h5>
-                                                    <span>{{ \General::getCompensation($investor->compensation) }}</span>
-                                                    </p>
-                                                    <button class="btn view-application-btn">View Applications<span class="white-circle-count">11</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="flex-just">
+        <div> <i class="fa fa-folder-open" aria-hidden="true"></i> Contributions</div>
+        <div>0</div>
         </div>
+
+        <div class="flex-just">
+        <div><i class="fa fa-diamond" aria-hidden="true"></i> MKP Score</div>
+        <div>0</div>
+        </div>
+
     </div>
+    </div>
+    </div>
+    </div>
+    </div>
+          </div>
+          <!-- Row end  -->
+
+
+  <div class="row">
+     <div class="col-md-12 pb-3">
+        <h3 class="account-mg-title-txt">Account Manager</h3>
+     </div>
+  </div>
+
+    <div class="row pb-4">
+     <div class="col-md-9">
+        <h4>Job Description</h4>
+        <p class="text-light-grey">{{ $project->job_description ?? '' }}.</p>
+     </div>
+      <div class="col-md-3">
+          <button type="button" class="btn btn-theme view-app-btn">View Applications <span class="white-circle-count">11</span></button>
+     </div>
+  </div>
+
+ 
+     <div class="white-box">
+       <div class="row">
+          <div class="col-md-6">
+              <div class="">
+                <ul class="job-descript-ul">
+                <li><h3>Language</h3><span>@foreach (General::getActiveLanguage() as $key => $val)
+              <option value="{{ $val->id }}" {{ ($val->id == $project->job_language_id)?'selected="selected"':'' }}">{{ $val->language }} </option>
+              @endforeach</span></li>
+                <li><h3>Skills</h3><span></span>{{ $project->skills ?? '' }} </li>
+                <li><h3>Education</h3><span>{{ $project->education ?? '' }}</span></li>
+                <li><h3>Experience</h3><span>{{ $project->experience ?? '' }}</span></li>
+                </ul>
+              </div>
+          </div>
+           <div class="col-md-6">
+              <div class="">
+                <ul class="job-descript-ul">
+                <li><h3>Employment Type</h3><span>{{ $project->employment_type ?? '' }}</span></li>
+                <li><h3>Days/Hours</h3><span></span>{{ $project->day_hours ?? '' }}</li>
+                <li><h3>Shifts</h3><span> {{ $project->shifts ?? '' }} </span></li>
+                <li><h3>Salary</h3><span>{{ $project->salary ?? '' }}</span></li>
+                </ul>
+              </div>
+          </div>
+     </div>
+  </div>
+
+
+
+
+        </div>
+      </div>
+       </div>
 </section>
 
 

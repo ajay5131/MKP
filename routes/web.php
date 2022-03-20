@@ -236,6 +236,16 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['user_auth:user']], fu
     Route::post('/update-itinerary', 'TravelController@updateItinerary')->name('travel.update.itinerary');
     Route::post('/delete-itinerary', 'TravelController@deleteItinerary')->name('travel.delete.itinerary');
 
+     // job
+     Route::get('/posted-job', 'JobsController@index')->name('posted.job');
+     Route::get('/job-info/{id}', 'JobsController@jobDetails')->name('job.info');
+     Route::get('/post-job', 'JobsController@addjob')->name('post.job');
+     Route::post('/store-jobs', 'JobsController@storejob')->name('store.job');
+     Route::get('/edit-front-job/{id}', 'JobsController@editjob')->name('edit.front.job');
+     Route::PUT('/update-job/{id}', 'JobsController@updatejob')->name('update.job');
+     Route::post('/fetch-cities', 'JobsController@fetchCity')->name('fetch.cities');
+     Route::post('/job-add-media', 'JobsController@addMedia')->name('job.add.media');
+
    
 
 });

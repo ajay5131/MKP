@@ -246,6 +246,17 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['user_auth:user']], fu
      Route::post('/fetch-cities', 'JobsController@fetchCity')->name('fetch.cities');
      Route::post('/job-add-media', 'JobsController@addMedia')->name('job.add.media');
 
+
+     // job
+     Route::get('/event-list', 'EventController@index')->name('event.list');
+     Route::get('/event-details/{id}', 'EventController@eventDetails')->name('event.details');
+     Route::get('/event-add', 'EventController@addEvent')->name('event.add');
+     Route::post('/store-event', 'EventController@storeEvent')->name('store.event');
+     Route::get('/event-edit/{id}', 'EventController@editEvent')->name('event.edit');
+     Route::PUT('/event-update/{id}', 'EventController@updateEvent')->name('event.update');
+     Route::post('/fetch-cities', 'EventController@fetchCity')->name('fetch.cities');
+     Route::post('/job-add-media', 'EventController@addMedia')->name('job.add.media');
+
    
 
 });

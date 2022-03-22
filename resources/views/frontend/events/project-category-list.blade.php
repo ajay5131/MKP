@@ -52,14 +52,12 @@
         </div>
 
         <div class="project-category" id="proj-cate-one">
-        <a href="{{ route('event.list') }}">
           <div class="project-cate-img-5 zoom"></div>
           <div class="project-info-area">
             <img src="{{ asset('assets/images/event.png') }}" class="proj-img-icon">
             <span class="project-txt">Events</span>
             <span class="project-no"> {{ $total_events ?? 0 }}</span>
           </div>
-          </a>
         </div>
 
       </div>

@@ -478,5 +478,8 @@
 </script>
 <script>
   CKEDITOR.replace('description');
+  CKEDITOR.replace('job_description');
+
+  
 </script>
 @endpush

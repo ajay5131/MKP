@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-12 d-flex align-v-center">
                     <h2 class="we-are-look-for-txt mb-0">We are Looking for :</h2>
-                    <span class="required-role">{{ $project->title ?? '' }}</span>
+                    <span class="required-role"> Participants,{{ $roleTitle ?? '' }}</span>
                 </div>
             </div>
 
@@ -93,6 +93,7 @@
 
                     </div>
                 </div>
+                
                 <div class="col-md-2">
                     <div class="view-like-follo-area">
                         <ul class="social-view-like-f">
@@ -101,12 +102,12 @@
                                 <span class="views-count"> 164 views</span>
                             </li>
                             <li>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                <span class="like-count"> 1</span>
+                                <i class="like_count_heart {{ isset($wishlist) && $wishlist > 0  ? 'fa fa-heart green-color' : 'fa fa-heart-o'}}" aria-hidden="true" data-id="{{$project->id}}"></i>
+                                <span class="like-count"> {{ $wishlist ?? 0 }} Likes</span>
                             </li>
                             <li>
-                                <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                <span class="followers-count"> 2 Followers</span>
+                                <i class="fa fa-user-plus followers" aria-hidden="true" data-followers-id="{{$project->id}}"></i>
+                                <span class="followers-count"> {{ $followers ?? 0 }} Followers</span>
                             </li>
                         </ul>
                     </div>
@@ -1039,7 +1040,7 @@
 
         function getAjaxFormData(datastring) {
             $.ajax({
-                url: "{{ route('project.add.media') }}",
+                url: "{{ route('event.add.media') }}",
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1157,7 +1158,7 @@ $('#media_form_role').on('submit', function(e) {
                 e.preventDefault();
                 var datastring = new FormData($('#media_form_role')[0]);
 
-                var url = "{{ route('project.add.role.media') }}"; 
+                var url = "{{ route('event.add.role.media') }}"; 
                 getCommonAjaxForm(url, datastring);
             });
 
@@ -1221,7 +1222,7 @@ $('#media_form_role').on('submit', function(e) {
     function showDesignerInvesterModel(id){
         var datastring =  "edit_role_id="+id;
 
-        var url = "{{ route('project.edit.role.form') }}"; 
+        var url = "{{ route('event.edit.role.form') }}"; 
         $.ajax({
                 url: url,
                 type: "POST",
@@ -1261,6 +1262,57 @@ $('#media_form_role').on('submit', function(e) {
 
         $('#edit-role-modal').modal('show');
     }
+
+
+    $('.like_count_heart').click(function(){
+        
+        var Id = $(this).attr('data-id');
+       
+        var url = "{{ route('event.thumbs.up-project') }}"; 
+        $.ajax({
+                url: url,
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'project_id': Id,
+                },
+                success: function(res) { 
+                    window.location.reload();
+                    
+                },
+                error: function(xhr, error) {
+                    console.log(error);
+                }
+        });
+    })
+
+    $('.followers').click(function(){
+        
+        var Id = $(this).attr('data-followers-id');
+       
+        var url = "{{ route('event.followers.up-project') }}"; 
+        $.ajax({
+                url: url,
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'users_profiles_id': Id,
+                },
+                success: function(res) { 
+                 window.location.reload();
+                    
+                },
+                error: function(xhr, error) {
+                    console.log(error);
+                }
+        });
+    })
+
+   
  
     </script>
 

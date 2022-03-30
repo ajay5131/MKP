@@ -16,6 +16,8 @@ use App\Models\Frontend\ProjectRoleCategory;
 use App\Models\Backend\Country;
 use App\Models\Backend\State;
 use App\Models\Backend\City;
+use App\Models\Frontend\Wishlist;
+use App\Models\Frontend\Followers;
 use App\User;
 use Auth;
 
@@ -136,6 +138,11 @@ class EventController extends BaseController
 
        $project_media_title = ProjectMediaTitle::where('project_id', $id)->get();
 
+       $wishlist = Wishlist::where('project_id', $id)->count();
+
+       $followers = Followers::where('users_profiles_id', $id)->count();
+
+
        $project_role_categories = ProjectRoleCategory::get();
        $keypeoples = KeyPeopleTitles::where('users_id', $user_id)->get();
 
@@ -155,11 +162,16 @@ class EventController extends BaseController
                         ->get(); 
 
         $designer = ProjectRole::where('project_role_category', 1)->first();                
-        $investor = ProjectRole::where('project_role_category', 2)->first();                
-
+        $investor = ProjectRole::where('project_role_category', 2)->first();
+        
+        $roleTitles= ProjectRole::where('project_category', 5)->select('role_title')->get();
+        foreach ($roleTitles as $key => $value) {
+            $role[] = isset($value->role_title) ? $value->role_title :'';
+        }
+        $roleTitle = implode(',' , $role);
         $profile_overview = UsersProfilePicture::where('users_profiles_id', $user_id)->first();                
 
-         return view('frontend.events.event-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor')); 
+         return view('frontend.events.event-details', compact('project', 'keypeoples', 'project_tags','project_media_title','project_media_title_result','project_role_categories','profile_arr','profile_overview','designer','investor','roleTitle','wishlist','followers')); 
         
     }
 
@@ -292,6 +304,7 @@ class EventController extends BaseController
         $request_data['price'] = $request->has('price')?$request->price:0;
         $request_data['keypeople'] = $request->keypeople;
         $request_data['role_created_by'] = $user_id; 
+        $request_data['project_category'] = 5; 
 
          ProjectRole::insertGetId($request_data);
         
@@ -309,7 +322,7 @@ class EventController extends BaseController
     }
 
 
-    public function editRoleProject(Request $request)
+    public function editRoleEvent(Request $request)
     {
         if($request->ajax()){
             $edit_role_id = $request->edit_role_id;  
@@ -408,6 +421,55 @@ class EventController extends BaseController
             }
     
         return redirect()->route('event.list')->with('success','Added successfully!');
+    }
+
+
+    public function saveWishList(Request $request){
+        
+        try {
+            
+            $wishlist = new Wishlist();
+           
+            $wishlist->project_id = $request->project_id;
+            $wishlist->status = 1;
+            $wishlist->project_category = 5;
+
+           $getData = Wishlist::where('project_id', $request->project_id)->first();
+            if($getData){
+                $getData->delete();
+                $msg = "Remove from wishlist";
+            }else{
+                $wishlist->save();
+                $msg = "Added to wishlist";
+            }
+            return response()->json($msg);
+        
+        } catch (\Exception $e) {
+            return response()->json($e);
+        }
+    }
+
+    public function saveFollowers(Request $request){
+        
+        try {
+            
+            $followers = new Followers();
+           
+            $followers->users_profiles_id = $request->users_profiles_id;
+
+           $getData = Followers::where('users_profiles_id', $request->users_profiles_id)->first();
+            if($getData){
+                $getData->delete();
+                $msg = "Remove from followers";
+            }else{
+                $followers->save();
+                $msg = "Added to followers";
+            }
+            return response()->json($msg);
+        
+        } catch (\Exception $e) {
+            return response()->json($e);
+        }
     }
     
 }

@@ -42,7 +42,6 @@
         </div>
 
         <div class="project-category" id="proj-cate-one">
-        <a href="{{ route('listing.list') }}">
           <div class="project-cate-img-4 zoom"></div>
 
           <div class="project-info-area">
@@ -50,7 +49,6 @@
             <span class="project-txt">Listings</span>
             <span class="project-no"> {{ $total_listings ?? 0 }}</span>
           </div>
-          </a>
         </div>
 
         <div class="project-category" id="proj-cate-one">

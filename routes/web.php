@@ -255,7 +255,24 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['user_auth:user']], fu
      Route::get('/event-edit/{id}', 'EventController@editEvent')->name('event.edit');
      Route::PUT('/event-update/{id}', 'EventController@updateEvent')->name('event.update');
      Route::post('/fetch-cities', 'EventController@fetchCity')->name('fetch.cities');
-     Route::post('/job-add-media', 'EventController@addMedia')->name('job.add.media');
+     Route::post('/event-add-media', 'EventController@addMedia')->name('event.add.media');
+     Route::post('/event-add-role', 'EventController@addRole')->name('event.add.role.media');
+     Route::post('/event-edit-role-form', 'EventController@editRoleEvent')->name('event.edit.role.form');
+     Route::post('/event-update-media', 'EventController@updateMedia')->name('event.update.media');
+     Route::post('/event-thumbs-up-project', 'EventController@saveWishList')->name('event.thumbs.up-project');
+     Route::post('/event-followers-up-project', 'EventController@saveFollowers')->name('event.followers.up-project');
+
+
+
+     // listing
+     Route::get('/listing-list', 'ListingController@index')->name('listing.list');
+     Route::get('/listing-details/{id}', 'ListingController@listDetails')->name('listing.details');
+     Route::get('/list-add', 'ListingController@addListing')->name('list.add');
+     Route::get('/list-edit/{id}', 'ListingController@editListing')->name('list.edit');
+     Route::PUT('/list-update/{id}', 'ListingController@updateListing')->name('list.update');
+     Route::post('/fetch-states', 'ListingController@fetchState')->name('fetch.states');
+     Route::post('/fetch-cities', 'ListingController@fetchCity')->name('fetch.cities');
+     Route::post('/store-listing', 'ListingController@storeListing')->name('store.listing');
 
    
 

@@ -198,7 +198,7 @@
 
         <div class="col-md-6">
           <label>Size <span class="mandatory">*</span></label>
-          <input type="text" class="form-control" name="size" placeholder="Size" id="size" value="{{$project->employment_type}}">
+          <input type="text" class="form-control" name="size" placeholder="Size" id="size" value="{{$project->size}}">
           @error('size')
           <p class="help-block"><strong>{{ $message }}</strong></p>
           @enderror
@@ -220,7 +220,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Job Atmosphere<span class="mandatory">*</span></label>
-            <input type="text" class="form-control" name="job_atmosphere" placeholder="Atmosphere" id="atmosphere" value="{{$project->employment_type}}">
+            <input type="text" class="form-control" name="job_atmosphere" placeholder="Atmosphere" id="atmosphere" value="{{$project->job_atmosphere}}">
             @error('job_atmosphere')
             <p class="help-block"><strong>{{ $message }}</strong></p>
             @enderror
@@ -325,15 +325,18 @@
           </div>
         </div>
       </div>
+
+            
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
             <label>Shifts<span class="mandatory">*</span></label>
+
             <select name="shifts[]" id="shifts" class="form-control select2 int_select" multiple="multiple">
-             <option value="morning">Morning</option>
-             <option value="afternoon">Afternoon</option>
-             <option value="night">Night</option>
-             <option value="rotating">Rotating</option> 
+              <option value="morning" {{ (in_array("morning",$shifts)) ? 'selected' : ''}}>Morning</option>
+              <option value="afternoon" {{ (in_array("afternoon",$shifts)) ? 'selected' : ''}}>Afternoon</option>
+              <option value="night" {{ (in_array("night",$shifts)) ? 'selected' : ''}}>Night</option>
+              <option value="rotating" {{ (in_array("rotating",$shifts)) ? 'selected' : ''}}>Rotating</option> 
             </select>
             @error('skills')
             <p class="help-block"><strong>{{ $message }}</strong></p>
@@ -386,7 +389,7 @@
 
       <div class="row">
         <div class="col-md-12 pt-3">
-          <button type="submit" class="create-project-btn">UPDATE TRAVEL &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
+          <button type="submit" class="create-project-btn">UPDATE JOB &nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
         </div>
       </div>
   </form>

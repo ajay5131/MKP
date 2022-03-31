@@ -77,7 +77,7 @@ class TravelController extends BaseController
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
         $request_data['image']   = isset($main_image) ? $main_image:""; 
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
@@ -373,7 +373,7 @@ class TravelController extends BaseController
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
         $request_data['image']   = isset($main_image) ? $main_image:"";
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
@@ -416,7 +416,7 @@ class TravelController extends BaseController
            
             Itinerary::insertGetId($request_data);
         }
-        return response()->json(['success' => true, 'msg' => 'Successfully Added Initerary']);
+        return response()->json(['success' => true, 'msg' => 'Successfully Added Itinerary']);
     }
 
     public function editItinerary(Request $request)
@@ -445,7 +445,7 @@ class TravelController extends BaseController
             $request_data['itinerary_value'] = isset($request->itinerary_value) ? $request->itinerary_value[$key]:"";
             
             $updateData = Itinerary::where('id',$request->initerary_id)->update($request_data);
-            return response()->json(['success' => true, 'msg' => 'Successfully updated Initerary']);
+            return response()->json(['success' => true, 'msg' => 'Successfully updated Itinerary']);
         }
 
     }

@@ -101,7 +101,7 @@ class EventController extends BaseController
         $request_data['title'] = isset($request->title) ? $request->title:"";
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
@@ -395,7 +395,7 @@ class EventController extends BaseController
         $request_data['title'] = isset($request->title) ? $request->title:"";
         $request_data['language_id'] = isset($request->language_id) ? $request->language_id:"";
         $request_data['interest_id'] = implode(',',$request->interest_id);
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['country_id'] = isset($request->country_id) ? $request->country_id:"";
         $request_data['state_id'] = isset($request->state_id) ? $request->state_id:"";
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";

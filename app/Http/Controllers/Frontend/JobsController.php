@@ -80,13 +80,13 @@ class JobsController extends BaseController
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
         $request_data['interest_id'] = isset($request->interest_id) ? implode(',',$request->interest_id) :"";
         $request_data['image']   = isset($main_image) ? $main_image:""; 
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['expiry_date'] = isset($request->expiry_date) ? $request->expiry_date:"";
         $request_data['fields'] = isset($request->fields) ? $request->fields:"";
         $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
         $request_data['size'] = isset($request->size) ? $request->size:"";
         $request_data['job_atmosphere'] = isset($request->job_atmosphere) ? $request->job_atmosphere:"";
-        $request_data['job_description'] = isset($request->job_description) ? $request->job_description:""; 
+        $request_data['job_description'] = isset($request->job_description) ? strip_tags($request->job_description):""; 
         $request_data['skills'] = isset($request->skills) ? $request->skills:""; 
         $request_data['education'] = isset($request->education) ? $request->education:""; 
         $request_data['bonus'] = isset($request->bonus) ? $request->bonus:"";
@@ -345,7 +345,9 @@ class JobsController extends BaseController
         $states = State::where('country_id', $project->country_id)->get();
         $cities = City::where('state_id', $project->state_id)->get();
         $project_types = ProjectType::pluck('project_type', 'project_type_id')->toArray();
-        return view('frontend.jobs.job-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project')); 
+
+        $shifts = explode(",",$project->shifts);
+        return view('frontend.jobs.job-edit', compact('countries','states', 'cities' , 'profile_arr', 'project_types','project','shifts')); 
     }
 
     //Update job
@@ -388,13 +390,13 @@ class JobsController extends BaseController
         $request_data['city_id'] = isset($request->city_id) ? $request->city_id:"";
         $request_data['interest_id'] = isset($request->interest_id) ? implode(',',$request->interest_id) :"";
         $request_data['image']   = isset($main_image) ? $main_image:""; 
-        $request_data['description'] = isset($request->description) ? $request->description:"";
+        $request_data['description'] = isset($request->description) ? strip_tags($request->description):"";
         $request_data['expiry_date'] = isset($request->expiry_date) ? $request->expiry_date:"";
         $request_data['fields'] = isset($request->fields) ? $request->fields:"";
         $request_data['no_of_people'] = isset($request->no_of_people) ? $request->no_of_people:"";
         $request_data['size'] = isset($request->size) ? $request->size:"";
         $request_data['job_atmosphere'] = isset($request->job_atmosphere) ? $request->job_atmosphere:"";
-        $request_data['job_description'] = isset($request->job_description) ? $request->job_description:""; 
+        $request_data['job_description'] = isset($request->job_description) ? strip_tags($request->job_description):""; 
         $request_data['skills'] = isset($request->skills) ? $request->skills:""; 
         $request_data['education'] = isset($request->education) ? $request->education:""; 
         $request_data['bonus'] = isset($request->bonus) ? $request->bonus:"";
@@ -406,7 +408,7 @@ class JobsController extends BaseController
         $request_data['shifts'] = isset($request->shifts) ? implode(',',$request->shifts) :"";
 
 
-       
+       //return $request_data;
          
         $updateData = Projects::where('id',$id)->update($request_data);
         
